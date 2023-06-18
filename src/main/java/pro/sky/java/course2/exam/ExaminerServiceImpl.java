@@ -3,9 +3,9 @@ package pro.sky.java.course2.exam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
@@ -22,13 +22,12 @@ public class ExaminerServiceImpl implements ExaminerService {
         if (questionService.getAll().size() < amount) {
             throw new RequestOverSizeException("Запрошено большее количество вопросов, чем хранится в сервисе");
         }
-        List<Question> questionList = new ArrayList<>();
-        while (questionList.size() < amount) {
+        Set<Question> questionSet = new HashSet<>(amount);
+        while (questionSet.size() < amount) {
             Question question = questionService.getRandomQuestion();
-            if (!questionList.contains(question)) {
-                questionList.add(question);
-            }
+            questionSet.add(question);
+
         }
-        return questionList;
+        return questionSet;
     }
 }
